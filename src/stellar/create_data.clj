@@ -12,15 +12,35 @@
 (api/get-ledger-info ledger-start)
 
 (core/get-ledger-txns ledger-start)
-;(reset! account-map (core/get-all-acct-dest-in-range ledger-start ledger-end))
-;(def acct-keys (mapv key @account-map))
-;(def temp-key (first acct-keys))
-;temp-key
-;(def temp-trans (core/get-all-txn-data-vec temp-key))
-;temp-trans
-;(count tempkeys)
-;(swap! account-map assoc-in [temp-key :transactions] temp-trans)
-;(swap! account-map assoc-in [temp-key :statistics]  (core/process-all-flow-data temp-trans temp-key))
+
+;initializes atom a creates keys from the unique destinations in a ledger range
+(reset! account-map (core/get-all-acct-dest-in-range ledger-start ledger-end))
+
+;creates a vector of the account keys in order to iterate through them
+(def acct-keys (mapv key @account-map))
+
+;takes the first acct id in the map
+(def temp-key (first acct-keys))
+
+;displays it
+temp-key
+
+;creates a vector of all the transaction data for the temp-key account
+(def temp-trans (core/get-all-txn-data-vec temp-key))
+
+;displays that transaction vector
+temp-trans
+
+;uploads that transaction vector to the transactions map for the corresponding acct-id (temp-key in this case)
+(swap! account-map assoc-in [temp-key :transactions] temp-trans)
+
+;uploads the accounts statistical data map for the given acct-id (temp-key)
+(swap! account-map assoc-in [temp-key :statistics]  (core/process-all-flow-data temp-trans temp-key))
+
+;display average inflow amount for a given account (temp-key)
+(get-in @account-map [temp-key :statistics :inflows :avg-txn])
+
+;iterate through all accts in the acct vector
 (comment
   (loop [current-id (first acct-keys) cnt 0 trans-vec (core/get-all-txn-data-vec (first acct-keys))]
     (swap! account-map assoc-in [current-id :transactions] trans-vec)

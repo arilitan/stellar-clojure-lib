@@ -145,19 +145,20 @@
 
 ;;;;;;;;;TEST FUCTIONS BELOW;;;;;;
 
+(def temp-acct "gHuAWt6ZQ5jskU7TgyQ8B1c7wH1LRfzyb6")
+temp-acct
 
+(def tempvec (get-all-txn-data-vec temp-acct))
+(def tempvec2 (get-all-txn-data-vec temp-acct))
 
-;(def tempvec (get-all-txn-data-vec "gfgjK2pjvrPi6f5BwsNqaUwS74LffgwXQT"))
-;(def tempvec2 (get-all-txn-data-vec "gfgjK2pjvrPi6f5BwsNqaUwS74LffgwXQT"))
-;tempvec2
-;tempvec
+tempvec
 
 ;(def testvec(filter-txn-by-payment tempvec2 "Payment"))
-;(get-all-txn-data-vec  "gHuAWt6ZQ5jskU7TgyQ8B1c7wH1LRfzyb6")
+(get-all-txn-data-vec temp-acct)
 
-;testvec
+testvec
 
-;(process-all-flow-data tempvec2 "gfgjK2pjvrPi6f5BwsNqaUwS74LffgwXQT")
+(process-all-flow-data tempvec2 temp-acct)
 
 
 
