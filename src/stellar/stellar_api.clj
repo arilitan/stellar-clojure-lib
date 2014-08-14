@@ -62,10 +62,11 @@
                            ;:ledger_index ledger-num
                            }]})))
 
-(-> (get-account-tx "gHuAWt6ZQ5jskU7TgyQ8B1c7wH1LRfzyb6")
+(-> (get-account-tx "gfgjK2pjvrPi6f5BwsNqaUwS74LffgwXQT")
     :result
     :transactions
     next second
     :tx
     :Destination
     )
+
