@@ -36,11 +36,11 @@ zZ”)</p>
     :sex
     :ethnicity
     :education
-    :other-data (other data not currently populated)
-        :email-address
-        :facebook-id
-        :trust-lines (contains a vector of maps with the following keys)
-            :trust-acct
-            :trust-amt
-            :trust-ccy
+:other-data (other data not currently populated)
+    :email-address
+    :facebook-id
+    :trust-lines (contains a vector of maps with the following keys)
+        :trust-acct
+        :trust-amt
+        :trust-ccy
 </code></pre>
