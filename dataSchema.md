@@ -16,30 +16,30 @@ zZ”)</p>
      :SigningPubKey
      :Sequence
 :statistics (contains a map of descriptive statistics about the transactions in the given account)
-    :inflows (contains a map of inflow statistics)
-      :total-coins (the gross number of STR that has come into    this account)
-      :total-txns (the total number of inflow transactions)
-      :avg-txn (the average amount each inflow transaction was)
-      :txn-frqcy (contains a map with keys equal to inflow transactionamounts and values equal to the number of times an inflow transaction on the ‘key’ amount occurred in the account)
-    :outflows (contains a map with the same keys as inflows but for outflow data)
-    :max-bal (the highest account balance this account has had)
-    :min-bal (the lowest account balance this account has had)
-    :max-time (the date/time corresponding to when the account was at max balance)
-    :min-time (the date/time corresponding to when the account was at min balance)
-    :avg-balance (the average balance calculated as the sum of the balances each time the account had a transaction divided by the total number of transactions)
-    :current-balance (the current balance of the account)
-    :time-dif-max-min (the max-time – the min-time)
-    :balance-over-time (contains a vector of vectors where for each subvector the first value is the date/time and the 2nd value is the balance of the account at the given date)/time
+     :inflows (contains a map of inflow statistics)
+        :total-coins (the gross number of STR that has come into    this account)
+        :total-txns (the total number of inflow transactions)
+        :avg-txn (the average amount each inflow transaction was)
+        :txn-frqcy (contains a map with keys equal to inflow transactionamounts and values equal to the number of times an inflow transaction on the ‘key’ amount occurred in the account)
+     :outflows (contains a map with the same keys as inflows but for outflow data)
+     :max-bal (the highest account balance this account has had)
+     :min-bal (the lowest account balance this account has had)
+     :max-time (the date/time corresponding to when the account was at max balance)
+     :min-time (the date/time corresponding to when the account was at min balance)
+     :avg-balance (the average balance calculated as the sum of the balances each time the account had a transaction divided by the total number of transactions)
+     :current-balance (the current balance of the account)
+     :time-dif-max-min (the max-time – the min-time)
+     :balance-over-time (contains a vector of vectors where for each subvector the first value is the date/time and the 2nd value is the balance of the account at the given date)/time
 :demographics (contains a map of demographic and other data about the  account – can be populated once integrated to facebook api)
-    :age
-    :location
-    :sex
-    :ethnicity
-    :education
+     :age
+     :location
+     :sex
+     :ethnicity
+     :education
 :other-data (other data not currently populated)
-    :email-address
-    :facebook-id
-    :trust-lines (contains a vector of maps with the following keys)
+     :email-address
+     :facebook-id
+     :trust-lines (contains a vector of maps with the following keys)
         :trust-acct
         :trust-amt
         :trust-ccy
