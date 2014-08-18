@@ -7,4 +7,5 @@
                  [http-kit "2.1.16"]
                  [cheshire "5.3.1"]
                  [clj-time "0.8.0"]
-                 [prismatic/plumbing "0.2.2"]])
+                 [prismatic/plumbing "0.2.2"]]
+  :main ^:skip-aot stellar.create_data)

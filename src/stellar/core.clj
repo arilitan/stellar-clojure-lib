@@ -1,5 +1,6 @@
 (ns stellar.core
-  (:require [stellar.stellar-api :as api]))
+  (:require [stellar.stellar-api :as api])
+  (:gen-class))
 
 ; curl -X POST https://live.stellar.org:9002 -d '{ "method" : "ledger" }'
 
@@ -90,7 +91,8 @@
      (assoc-in temp-map [:txn-frqcy] ;adds the txn-amount to the frequency map
                (update-index-map (get temp-map :txn-frqcy) txn-amount))
      (assoc-in [:avg-txn]
-               (/ (temp-map :total-coins) (temp-map :total-txns)))
+               (format "%.0f" (double
+               (/ (temp-map :total-coins) (temp-map :total-txns)))))
      )))
 
 ;given a transaction map, acct-id, and running stats, returns updated stat map depending on if the transaction is an inflow or outflow
@@ -109,24 +111,25 @@
   (let [filtered-vec (filter-txn-by-payment txn-vec "Payment")]
     (loop[flow-stats statistic-data cnt 0 cur-bal 0 cur-bal-sum 0 max-time ((nth filtered-vec 0) :date) min-time ((nth filtered-vec 0) :date) max-bal 0 min-bal 0 balance-over-time []]
       (if (= cnt (dec(count filtered-vec)))
+        (let [current-balance (if (= ((nth filtered-vec cnt) :Account) acct-id) (- cur-bal (read-string((nth filtered-vec cnt) :Amount))) (+ cur-bal (read-string((nth filtered-vec cnt) :Amount))))]
         (->
          (update-flow-stats (nth filtered-vec cnt) acct-id flow-stats)
          (assoc
-           :max-bal (if (> cur-bal max-bal) cur-bal max-bal)
-           :max-time (if (> cur-bal max-bal) ((nth filtered-vec cnt) :date) max-time)
-           :min-bal (if (< cur-bal min-bal) cur-bal min-bal)
-           :min-time (if (< cur-bal min-bal) ((nth filtered-vec cnt) :date) min-time)
-           :current-balance (if (= ((nth filtered-vec cnt) :Account) acct-id) (- cur-bal (read-string((nth filtered-vec cnt) :Amount))) (+ cur-bal (read-string((nth filtered-vec cnt) :Amount))))
+           :max-bal (if (> current-balance max-bal) current-balance max-bal)
+           :max-time (if (> current-balance max-bal) ((nth filtered-vec cnt) :date) max-time)
+           :min-bal (if (< current-balance min-bal) current-balance min-bal)
+           :min-time (if (< current-balance min-bal) ((nth filtered-vec cnt) :date) min-time)
+           :current-balance current-balance
            :avg-balance (format "%.0f"(double (/
-                                               (+ cur-bal-sum (if (= ((nth filtered-vec cnt) :Account) acct-id) (- cur-bal (read-string((nth filtered-vec cnt) :Amount))) (+ cur-bal (read-string((nth filtered-vec cnt) :Amount)))))
+                                               (+ cur-bal-sum current-balance)
                                                (inc (+ (get-in flow-stats [:inflows :total-txns])(get-in flow-stats [:outflows :total-txns]))))))
            :balance-over-time (conj balance-over-time [((nth filtered-vec cnt) :date)
                                                        (if (= ((nth filtered-vec cnt) :Account) acct-id)
                                                          (- cur-bal (read-string((nth filtered-vec cnt) :Amount)))
                                                          (+ cur-bal (read-string((nth filtered-vec cnt) :Amount))))])
-           :time-dif-max-min (- (if (> cur-bal max-bal) ((nth filtered-vec cnt) :date) max-time)
-                                (if (< cur-bal min-bal) ((nth filtered-vec cnt) :date) min-time))
-         ))          ;:current-balance (+ cur-bal (read-string((nth filtered-vec cnt) :Amount))))
+           :time-dif-max-min (- (if (> current-balance max-bal) ((nth filtered-vec cnt) :date) max-time)
+                                (if (< current-balance min-bal) ((nth filtered-vec cnt) :date) min-time))
+         )))
         (let[cur-map (nth filtered-vec cnt)]
           (recur (update-flow-stats cur-map acct-id flow-stats)
                  (inc cnt)
@@ -143,22 +146,7 @@
             ))))))
 
 
-;;;;;;;;;TEST FUCTIONS BELOW;;;;;;
 
-(def temp-acct "gHuAWt6ZQ5jskU7TgyQ8B1c7wH1LRfzyb6")
-temp-acct
-
-(def tempvec (get-all-txn-data-vec temp-acct))
-(def tempvec2 (get-all-txn-data-vec temp-acct))
-
-tempvec
-
-;(def testvec(filter-txn-by-payment tempvec2 "Payment"))
-(get-all-txn-data-vec temp-acct)
-
-testvec
-
-(process-all-flow-data tempvec2 temp-acct)
 
 
 

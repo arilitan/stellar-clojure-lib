@@ -2,6 +2,7 @@
   (:require [cheshire.core   :as json]
             [org.httpkit.client :as http]))
 
+;generic api call to https://live.stellar.org:9002
 (defn api-req [data]
   (->> data
        json/generate-string
@@ -61,12 +62,3 @@
                  :params [{:start tx
                            ;:ledger_index ledger-num
                            }]})))
-
-(-> (get-account-tx "gfgjK2pjvrPi6f5BwsNqaUwS74LffgwXQT")
-    :result
-    :transactions
-    next second
-    :tx
-    :Destination
-    )
-
