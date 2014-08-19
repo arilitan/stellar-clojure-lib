@@ -16,7 +16,12 @@ You can use a tool built in leiningen called REPL to interact with the library f
 
 To get started, in your terminal `cd` into the `stellar-clojure-lib` folder you created.
 
-Enter `$ lein repl`. you should see output that looks like this:
+Enter 
+```
+$ lein deps
+$ lein repl
+```
+You should see output that looks like this:
 ```
 nREPL server started on port 60697 on host 127.0.0.1 - nrepl://127.0.0.1:6069
 REPL-y 0.3.2, nREPL 0.2.3
@@ -96,6 +101,7 @@ Display all the data in the ledger:
 stellar.create_data=> (all-data-map)
 ```
 
+To exit the REPL interface you can pres ctrl^d
 
 [lein link]:https://github.com/technomancy/leiningen
 [wiki]:https://github.com/arilitan/stellar-clojure-lib/wiki
